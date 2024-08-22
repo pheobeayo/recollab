@@ -54,9 +54,9 @@ const Home = () => {
       <div className="relative flex overflow-x-hidden">
         
             <div className="animate-marquee whitespace-nowrap flex gap-8 p-4  items-center">
-            <span className="mx-4 text-[#123962] lg:text-[28px] md:text-[28px] text-[28px] font-[600]"> Connect, Share and Collaborate</span>
-            <span className="mx-4 text-[#123962] lg:text-[28px] md:text-[28px] text-[28px] font-[600]">Create and Manage research projects</span>
-            <span className="mx-4 text-[#123962] lg:text-[28px] md:text-[28px] text-[28px] font-[600]">Find collaborators or reviewers</span>
+            <span className="mx-4 text-[#123962] lg:text-[28px] md:text-[28px] text-[28px] font-[600] cursor-pointer"> Connect, Share and Collaborate</span>
+            <span className="mx-4 text-[#123962] lg:text-[28px] md:text-[28px] text-[28px] font-[600] cursor-pointer">Create and Manage research projects</span>
+            <span className="mx-4 text-[#123962] lg:text-[28px] md:text-[28px] text-[28px] font-[600] cursor-pointer">Find collaborators or reviewers</span>
             </div>
 
 
