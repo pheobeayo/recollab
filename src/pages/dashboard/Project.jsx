@@ -32,18 +32,16 @@ const Project = () => {
           id: index + 1,
           address: item[0],
           projectDetails: item[1],
-          upvoted: item[3],
-          downVoted: item[4],
+          upvoted: item[6],
+          downVoted: item[7],
         };
       });
       setAllProjects(converted);
     } catch (error) {
-      console.error(error);
-      toast.error("Profile creation failed!", {
+      toast.error("An error occured", {
         position: "top-center",
       });
-    } finally {
-    }
+    } 
   }
 
   useEffect(() => {
@@ -70,20 +68,20 @@ const Project = () => {
       </header>
       <section className="flex justify-between flex-wrap my-6">
       {allProjects.map((info) => (<div className="w-[90%] lg:w-[32%] md:w-[32%] p-6 bg-white rounded-lg text-[14px]">
-          <p className="truncate">
+          <p className="truncate py-4">
             <strong>Owner</strong> {info.address}
           </p>
-          <p>
+          <p className="py-4">
             <strong>Project Details</strong>To learn more about this innovative project 
-            <a href={info.projectDetails} target="_blank"> click here</a>
+            <a href={info.projectDetails} target="_blank" className="text-blue-700"> click here</a>
           </p>
-          <p>
+          <p className="pb-2">
             <strong>Upvotes</strong> {Number(info.upvoted)}
           </p>
-          <p>
+          <p className="pb-4">
             <strong>Downvotes</strong> {Number(info.downVoted)}
           </p>
-          <button className="bg-[#00AEE6] p-4 rounded-lg w-[50%] mx-auto text-white">
+          <button className="bg-[#00AEE6] px-4 py-2 rounded-lg w-[100%] mx-auto text-white">
             View Details
           </button>
         </div>))}
