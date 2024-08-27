@@ -8,10 +8,10 @@ import {
 import { Toaster } from "react-hot-toast";
 import PageLoader from "../components/Loader/PageLoader";
 
-
 const Home = lazy(() => import("../pages/Home"));
 const DashboardLayout = lazy(() => import("../layout/DashboardLayout"));
 const HomeLayout = lazy(() => import ('../layout/HomeLayout'))
+const Project = lazy(() => import('../pages/dashboard/Project'))
 
 const router = createBrowserRouter(createRoutesFromElements(
 
@@ -20,7 +20,8 @@ const router = createBrowserRouter(createRoutesFromElements(
     <Route index element={<Home />} />
       
     </Route>
-    <Route path="/dashboard" element={<DashboardLayout />} >
+    <Route path="/project" element={<DashboardLayout />} >
+      <Route index element={<Project />} />
       
     </Route>
     </Route>
