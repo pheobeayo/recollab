@@ -12,6 +12,7 @@ const Home = lazy(() => import("../pages/Home"));
 const DashboardLayout = lazy(() => import("../layout/DashboardLayout"));
 const HomeLayout = lazy(() => import ('../layout/HomeLayout'))
 const Project = lazy(() => import('../pages/dashboard/Project'))
+const Profile = lazy(() => import('../pages/dashboard/Profile'))
 
 const router = createBrowserRouter(createRoutesFromElements(
 
@@ -22,6 +23,7 @@ const router = createBrowserRouter(createRoutesFromElements(
     </Route>
     <Route path="/project" element={<DashboardLayout />} >
       <Route index element={<Project />} />
+      <Route path="profile" element={<Profile />} />
       
     </Route>
     </Route>
