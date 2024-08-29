@@ -29,18 +29,24 @@ const CreateProfile = () => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const [userName, setUserName] = useState(''); 
-    const [bio, setBio] = useState('')
-    const [userLocation, setUserLocation] = useState('') 
-    const [upVote, setUpVote] = useState(0) 
-    const [downVote, setDownVote] = useState('') 
-    const [portfolio, setPortfolio] = useState('') 
-    const [userContact, setuserContact] = useState('') 
+    const [userName, setUserName] = useState('');
+    const [bio, setBio] = useState('');
+    const [userLocation, setUserLocation] = useState('');
+    const [portfolio, setPortfolio] = useState('');
+    const [userContact, setUserContact] = useState({ email: '', phoneno: '', linkedin: '' });
     const { address } = useWeb3ModalAccount();
-
-
     const { chainId } = useWeb3ModalAccount();
-    const { walletProvider } = useWeb3ModalProvider()
+    const { walletProvider } = useWeb3ModalProvider();
+    const timeCreated = Date.now();
+
+
+
+    const handleContact = (e) => {
+      const { name, value } = e.target;
+      setUserContact(prev => ({ ...prev, [name]: value }));
+  };
+
+
 
     async function handleCreateProfile() {
         if (!isSupportedChain(chainId)) return console.error("Wrong network");
@@ -49,8 +55,23 @@ const CreateProfile = () => {
     
         const contract = getRecollabContract(signer);
     
-        try {
-          const transaction = await contract.createProfile(address, userName, bio, userLocation, portfolio, userContact, upVote, downVote );
+        const creatorprofile = {
+          owner: address,
+          name: userName,
+          bio: bio,
+          location: userLocation,
+          portfolio: portfolio,
+          contact: userContact,
+          created_at: timeCreated,
+          upVoted: 0,
+          downVoted: 0
+      };
+
+      try {
+
+        console.log(timeCreated, "timeCreated")
+          const transaction = await contract.createProfile(creatorprofile);
+
           const receipt = await transaction.wait();
     
           if (receipt.status) {
@@ -68,37 +89,42 @@ const CreateProfile = () => {
             position: "top-center",
           });
         } finally {
-          setDownVote('')
           setBio('')
-          setUpVote('')
           setUserLocation('')
           setUserName('')
           setPortfolio('')
-          setuserContact('')
-
+          setUserContact('')
           setOpen(false)
         }
       };
-  return (
-    <div>
-        <div>
-        <button className="bg-[#00AEE6] text-white py-2 px-4 rounded-lg lg:text-[20px] md:text-[20px] font-bold text-[16px] w-[100%] lg:w-[50%] md:w-[50%] my-2 hover:bg-bg-ash hover:text-darkGrey hover:font-bold" onClick={handleOpen}>Create Profile</button>
-    <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-        <input type="text" placeholder="Seller's Name" className="rounded-lg w-[100%] text-white p-4 bg-[#ffffff23] border border-white/50 backdrop-blur-lg mb-4 outline-none" onChange={(e) => setUserName(e.target.value)} />
-          <input type="text" placeholder='Location' className="rounded-lg w-[100%] border text-white border-white/50 p-4 bg-[#ffffff23] backdrop-blur-lg mb-4 outline-none" onChange={(e) => setLocation(e.target.value)} />
-          <input type="email" placeholder='Mail' onChange={(e) => setMail(e.target.value)}  className="text-white rounded-lg w-[100%] p-4 bg-[#ffffff23] border border-white/50 backdrop-blur-lg mb-4 outline-none" />
-          <button className="bg-[#427142] text-[white] py-2 px-4 rounded-lg lg:text-[20px] md:text-[20px] font-bold text-[16px] w-[100%] my-4" onClick={handleCreateProfile}>Create &rarr;</button>
-        </Box>
-      </Modal>
+      return (
+        <div className="w-[100%] lg:w-[20%] md:w-[20%]">
+            <div>
+            <button className="bg-[#00AEE6] text-white py-2 px-4 rounded-lg lg:text-[20px] md:text-[20px] font-bold text-[16px] w-[100%] my-2 hover:bg-bg-ash hover:text-darkGrey hover:font-bold" onClick={handleOpen}>Create Profile</button>
+        <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+            <input type="text" placeholder="Address" className="rounded-lg w-[100%] text-white px-4 py-2 bg-[#ffffff23] border border-white/50 backdrop-blur-lg mb-4 outline-none" value={address} readOnly />
+            <input type="text" placeholder="Name" className="rounded-lg w-[100%] text-white px-4 py-2 bg-[#ffffff23] border border-white/50 backdrop-blur-lg mb-4 outline-none" onChange={(e) => setUserName(e.target.value)} />
+            <input type="text" placeholder="Bio" className="rounded-lg w-[100%] text-white px-4 py-2 bg-[#ffffff23] border border-white/50 backdrop-blur-lg mb-4 outline-none" onChange={(e) => setBio(e.target.value)} />
+              <input type="text" placeholder='Location' className="rounded-lg w-[100%] border text-white border-white/50 px-4 py-2 bg-[#ffffff23] backdrop-blur-lg mb-4 outline-none" onChange={(e) => setUserLocation(e.target.value)} />
+              <input type="email" placeholder='Portfolio' onChange={(e) => setPortfolio(e.target.value)}  className="text-white rounded-lg w-[100%] px-4 py-2 bg-[#ffffff23] border border-white/50 backdrop-blur-lg mb-4 outline-none" />
+              <input type="email" placeholder='Email' name='email' onChange={handleContact} value={userContact.email}  className="text-white rounded-lg w-[100%] px-4 py-2 bg-[#ffffff23] border border-white/50 backdrop-blur-lg mb-4 outline-none" /> 
+              <input type="text" placeholder='Phone Number' name='phoneno' onChange={handleContact} value={userContact.phoneno}  className="text-white rounded-lg w-[100%] px-4 py-2 bg-[#ffffff23] border border-white/50 backdrop-blur-lg mb-4 outline-none" />
+              <input type="email" placeholder='LinkedIn' name='linkedin' onChange={handleContact} value={userContact.linkedin}  className="text-white rounded-lg w-[100%] px-4 py-2 bg-[#ffffff23] border border-white/50 backdrop-blur-lg mb-4 outline-none" />
+              <input type="text" placeholder="Timecreated" className="rounded-lg w-[100%] text-white px-4 py-2 bg-[#ffffff23] border border-white/50 backdrop-blur-lg mb-4 outline-none" value={timeCreated} readOnly />
+              {/* <input type="text" placeholder='Upvote' onChange={() => setUpVote(0)}  className="text-white rounded-lg w-[100%] px-4 py-2 bg-[#ffffff23] border border-white/50 backdrop-blur-lg mb-4 outline-none" readOnly value={upVote}/>
+              <input type="text" placeholder='Downvote' onChange={() => setDownVote(0)} className="text-white rounded-lg w-[100%] px-4 py-2 bg-[#ffffff23] border border-white/50 backdrop-blur-lg mb-4 outline-none" readOnly value={downVote} /> */}
+              <button className="bg-[#00AEE6] text-[white] py-2 px-4 rounded-lg lg:text-[20px] md:text-[20px] font-bold text-[16px] w-[100%] my-4" onClick={handleCreateProfile}>Create &rarr;</button>
+            </Box>
+          </Modal>
+            </div>
         </div>
-    </div>
-  )
+      )
 }
 
 export default CreateProfile
