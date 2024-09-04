@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { Sling as Hamburger } from "hamburger-react";
 import { CgHomeAlt } from "react-icons/cg";
 import { BiBox } from "react-icons/bi";
@@ -8,9 +8,11 @@ import { FcCollaboration } from "react-icons/fc";
 import { RxUpdate } from "react-icons/rx";
 import { NavLink } from "react-router-dom";
 import logo from '../assets/logo.svg'
+import { useDisconnect } from "@web3modal/ethers/react";
 
 const MobileSidebar = () => {
   const [isOpen, setOpen] = useState(false);
+  const { disconnect } = useDisconnect();
 
 
   const activeStyle = {
@@ -22,11 +24,11 @@ const MobileSidebar = () => {
 
   return (
     <header className="lg:hidden md:hidden flex justify-between my-4 relative">
-            <img src={logo} alt="" className="w-[150px] my-4" />
-      <Hamburger toggled={isOpen} toggle={setOpen} color="#427142" direction="right"/>
+      <img src={logo} alt="" className="w-[150px] my-4" />
+      <Hamburger toggled={isOpen} toggle={setOpen} color="#427142" direction="right" />
       {isOpen && (
         <div className="bg-[#123962] text-white p-8 py-12 h-[100vh] w-[100%] absolute top-20 left-0 bg-baseBlack/70 z-50">
-            <w3m-button />
+          <w3m-button />
           <NavLink
             to="/dashboard"
             className="text-[14px] text-white flex items-center py-4 my-4 px-4 hover:text-[#00AEE6]"
@@ -65,9 +67,13 @@ const MobileSidebar = () => {
           >
             < RxUpdate className="mr-4" /> Updates
           </NavLink>
-          <button className="text-[14px] text-white  flex items-center py-4 mb-4 px-6  hover:text-[#00AEE6]">
+          <button className="text-[14px] text-white  flex items-center py-4 mb-4 px-6  hover:text-[#00AEE6]"
+            onClick={() => disconnect()}>
             <TbSettings className="mr-4" /> Log out
           </button>
+          <div>
+            <w3m-button />
+          </div>
         </div>
       )}
     </header>
