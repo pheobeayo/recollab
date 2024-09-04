@@ -1,12 +1,13 @@
 import Sidebar from "../components/Sidebar";
-import { Outlet} from "react-router-dom";
+import {Navigate, Outlet} from "react-router-dom";
 import MobileSidebar from "../components/MobileSidebar";
+import { useWeb3ModalAccount } from "@web3modal/ethers/react";
 
 
 const DashboardLayout = () => {
+  const { isConnected } = useWeb3ModalAccount();
 
-
-  return (
+  return !isConnected ? <Navigate to={'/'} /> :(
     <div>
       <div className="flex bg-white">
         <Sidebar />
